@@ -1,5 +1,6 @@
 import GeneradorSudoku from './generadorSudoku.js';
 {
+    console.log("Hola git");
     let tablero= document.getElementById("tablero");
     let casillaVacia = document.createElement('div');
     let cuadradoSeleccionado = casillaVacia;
