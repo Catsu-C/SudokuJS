@@ -1,0 +1,33 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    color: #884545;
+    font-size: 25px;
+}
+body{
+    background-color: #272424;
+}
+.estructura{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 30% auto 30%;
+    margin-top: 100px;
+}
+.menu{
+    margin: auto;
+    align-items: center;
+}
+.pValor{
+    grid-area: 1/1/2/2;
+    font-size: 40px;
+}
+.pPredeterminada{
+    grid-area: 1/1/2/2;
+    font-size: 40px;
+}
+.pAnotacion{
+    padding-top: 25%;
+    grid-area: 1/1/2/2;
+    text-align: left;
+    font-size: 20px;
+}

@@ -1,0 +1,71 @@
+.casillaResaltada,
+.casillaSelec,
+.casilla{
+    border-radius: 0.7rem;
+    display: grid;
+    place-items: center;
+    animation: hoverOut 0.5s forwards;
+}
+.casilla:hover,
+.casillaSelec:hover,
+.casillaResaltada:hover{
+    animation: hoverIn 0.5s  forwards;
+}
+.casilla{
+    background-color: #272424;
+}
+.casillaSelec{
+    background-color: #884545;
+}
+.casillaResaltada{
+    background-color: #813246;
+}
+.casillaResaltada > p,
+.casillaSelec > p{
+    color: #272424;
+}
+.casillaPredeterminada{
+    background-color: #3b1e1e;
+    border-radius: 1.2rem;
+    display: grid;
+    place-items: center;
+}
+.casillaPredeterminada > p {
+    grid-area: 1/1/2/2;
+    font-size: 40px;
+    padding: 5%;
+    border-radius: 10px;
+}
+.casillaPreResaltada{
+    background-color: #813246;
+    border-radius: 1.2rem;
+    display: grid;
+    place-items: center;
+}
+.casillaPreResaltada > p  {
+    color: #272424;
+    grid-area: 1/1/2/2;
+    font-size: 40px;
+    padding: 5%;
+    border-radius: 10px;
+}
+
+@keyframes hoverIn {
+    0%{
+        border-radius: 0.7rem;
+    }
+    100%{
+        transform: scale(0.9);
+        border-radius: 1.2rem;
+    }
+}
+@keyframes hoverOut {
+    0%{
+        transform: scale(0.9);
+        border-radius: 1.2rem;
+    }
+    100%{
+        transform: scale(1);
+        border-radius: 0.7rem;
+    }
+}

@@ -1,0 +1,18 @@
+.anotacion{
+    width: 100px;
+    height: 100px;
+    background-size: 100% 100%;
+    background-image: url("../img/anotacion.png");
+}
+.valorFinal{
+    width: 100px;
+    height: 100px;
+    background-size: 100% 100%;
+    background-image: url("../img/valor.png");
+}
+.generarPartida{
+    margin-top: 30px;
+    width: 120px;
+    height: 70px;
+    background-color: rgb(53, 61, 71);
+}

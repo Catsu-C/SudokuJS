@@ -1,0 +1,58 @@
+.tablero{
+    width: 100%;
+    margin: auto;
+    padding: 0.2rem;
+    border-radius: 1rem;
+    height: auto;
+    background-color: #752d2d;
+    /* "to left" / "to right" - affects initial color */
+    
+}
+.grid{
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 1rem;
+    width: 100%;
+    gap: 0.7rem;
+}
+.cuadrado{
+    width: 100%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.2rem;    
+    grid-template-columns: repeat(3,1fr);
+}
+.cuadrado > div::before{
+    content: "";
+    padding-top: 100%;
+    display: block;
+    grid-area: 1/1/2/2;
+}
+
+.tableroVictoria{
+    animation: victoria 1s ease;
+}
+@keyframes victoria{
+    0%{
+        background: linear-gradient(to right,#2d7549 50%,#752d2d 50%) left;
+        background-size: 200%;
+        background-position: right;
+    }
+    49.9%{
+        background: linear-gradient(to right, #2d7549 50%, #752d2d 50%) left;
+        background-size: 200%;
+        background-position: left;
+    }
+    50%{
+        background: linear-gradient(to right, #752d2d 50%,#2d7549 50%) left;
+        background-size: 200%;
+        background-position:right;
+    }
+    100%{
+        background: linear-gradient(to right, #752d2d 50%,#2d7549 50%) left;
+        background-size: 200%;
+        background-position: left;
+    }
+}

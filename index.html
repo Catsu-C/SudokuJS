@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sudoku</title>
+        <link rel="stylesheet" href="css/estilosEstructura.css" type="text/css">
+        <link rel="stylesheet" href="css/estilosCasillas.css" type="text/css">
+        <link rel="stylesheet" href="css/estilosTablero.css" type="text/css">
+        <link rel="stylesheet" href="css/estilosGridNumeros.css" type="text/css">
+        <link rel="stylesheet" href="css/estilosBotones.css" type="text/css">
+    </head>
+    <body>
+        <div class="estructura">
+            <div class="menu" id="menuIzquierda">
+                <button id="setAccion"></button>
+                <br>
+                <button class="generarPartida" id="generarPartida">Generar Partida</button>
+                <br>
+                <button id="btnAnotacion">Anotar</button>
+                <br>
+                <button id="btnSolucionar">Solucionar</button>
+                <br>
+                <button id="verificar">Verificar</button>
+                <br>
+                <button class="VaciarTablero" id="vaciar">Vaciar</button>
+                
+            </div>
+            <div class="tablero">
+                <div class="grid" id="tablero">
+            
+                </div>
+            </div>
+            <div class="menu" id="menuDerecha">
+                <div class="gridNumeros">
+                    <div class="numero" id="1">1</div>
+                    <div class="numero" id="2">2</div>
+                    <div class="numero" id="3">3</div>
+                    <div class="numero" id="4">4</div>
+                    <div class="numero" id="5">5</div>
+                    <div class="numero" id="6">6</div>
+                    <div class="numero" id="7">7</div>
+                    <div class="numero" id="8">8</div>
+                    <div class="numero" id="9">9</div>
+                    <div class="numero" id="-">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <button id="debug">Debug</button>
+        <script type="module" src="js/main.js" defer></script>
+    </body>
+</html>
