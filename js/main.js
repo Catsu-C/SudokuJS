@@ -33,7 +33,14 @@ import GeneradorSudoku from './generadorSudoku.js';
                     cuadradoSeleccionado.className = "casillaResaltada"
                 }
             } else {
-                if (cuadradoSeleccionado.childNodes[0].innerText.length < 10 && !(cuadradoSeleccionado.childNodes[0].innerText.includes(e.key))) {
+                if (cuadradoSeleccionado.childNodes[0].innerText.includes(e.key)) {
+                    const separacion = cuadradoSeleccionado.childNodes[0].innerText.split(e.key);
+                    cuadradoSeleccionado.childNodes[0].innerText = separacion[0] + separacion[1];
+                    console.log(cuadradoSeleccionado.childNodes[0].innerText.length);
+                    if (cuadradoSeleccionado.childNodes[0].innerText.length === 8){
+                       
+                    }
+                }else if(cuadradoSeleccionado.childNodes[0].innerText.length < 10) {
                     cuadradoSeleccionado.childNodes[0].className = "pAnotacion";
                     cuadradoSeleccionado.childNodes[0].innerText += e.key;
                     if (cuadradoSeleccionado.childNodes[0].innerText.length === 6) {
@@ -47,7 +54,7 @@ import GeneradorSudoku from './generadorSudoku.js';
         } else if (e.key === "Backspace") {
             let valor = cuadradoSeleccionado.childNodes[0].innerText;
             cuadradoSeleccionado.childNodes[0].innerText = valor.slice(0, valor.length - 1);
-            if(cuadradoSeleccionado.childNodes[0].className="pValor"){
+            if(cuadradoSeleccionado.childNodes[0].className==="pValor"){
                 const cuadrado = cuadradoSeleccionado.id.split('|')[0];
                 const posicion = cuadradoSeleccionado.id.split('|')[1];
                 generadorSudoku.valoresFinales[cuadrado][posicion]="";
