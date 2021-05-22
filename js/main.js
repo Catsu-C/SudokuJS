@@ -22,30 +22,27 @@ import GeneradorSudoku from './generadorSudoku.js';
     document.addEventListener('keydown', e => {
         if (parseInt(e.key) > 0 && parseInt(e.key) < 10) {
             if (botonSetAccion.className === "valorFinal") {
-                cuadradoSeleccionado.childNodes[0].className = "pValor";
-                let cuadrado = cuadradoSeleccionado.id.split('|')[0];
-                let posicion = cuadradoSeleccionado.id.split('|')[1];
-                let valor= e.key;
-                limpiarPorValorFinal(cuadrado,posicion,valor,casillas);
-                cuadradoSeleccionado.childNodes[0].innerText = e.key;
-                generadorSudoku.valoresFinales[cuadrado][posicion]=valor;
-                if (cuadradoSeleccionado.childNodes[0].innerText.includes(numeroResaltado.innerHTML)) {
-                    cuadradoSeleccionado.className = "casillaResaltada"
+                if (cuadradoSeleccionado.childNodes[0].innerText.includes(e.key) && cuadradoSeleccionado.childNodes[0].className === "pValor") {
+                    cuadradoSeleccionado.childNodes[0].innerText="";
+                } else {cuadradoSeleccionado.childNodes[0].className = "pValor";
+                    let cuadrado = cuadradoSeleccionado.id.split('|')[0];
+                    let posicion = cuadradoSeleccionado.id.split('|')[1];
+                    let valor= e.key;
+                    limpiarPorValorFinal(cuadrado,posicion,valor,casillas);
+                    cuadradoSeleccionado.childNodes[0].innerText = e.key;
+                    generadorSudoku.valoresFinales[cuadrado][posicion]=valor;
+                    if (cuadradoSeleccionado.childNodes[0].innerText.includes(numeroResaltado.innerHTML)) {
+                        cuadradoSeleccionado.className = "casillaResaltada"
+                    }
                 }
             } else {
                 if (cuadradoSeleccionado.childNodes[0].innerText.includes(e.key)) {
-                    const separacion = cuadradoSeleccionado.childNodes[0].innerText.split(e.key);
+                    let separacion = cuadradoSeleccionado.childNodes[0].innerText.split(e.key);
                     cuadradoSeleccionado.childNodes[0].innerText = separacion[0] + separacion[1];
                     console.log(cuadradoSeleccionado.childNodes[0].innerText.length);
-                    if (cuadradoSeleccionado.childNodes[0].innerText.length === 8){
-                       
-                    }
                 }else if(cuadradoSeleccionado.childNodes[0].innerText.length < 10) {
                     cuadradoSeleccionado.childNodes[0].className = "pAnotacion";
                     cuadradoSeleccionado.childNodes[0].innerText += e.key;
-                    if (cuadradoSeleccionado.childNodes[0].innerText.length === 6) {
-                        cuadradoSeleccionado.childNodes[0].appendChild(document.createElement('br'));
-                    }
                 }
                 if (cuadradoSeleccionado.childNodes[0].innerText.includes(numeroResaltado.innerHTML)) {
                     cuadradoSeleccionado.className = "casillaResaltada"
