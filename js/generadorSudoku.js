@@ -10,6 +10,7 @@ export default class GeneradorSudoku {
         this.valoresFinales = [[], [], [], [], [], [], [], [], []];
         this.anotaciones = [[], [], [], [], [], [], [], [], []];
         this.solucion = [[], [], [], [], [], [], [], [], []];
+        this.valoresPredeterminados = [[], [], [], [], [], [], [], [], []];
         this.inicializarTableros();
     }
     /*
@@ -41,9 +42,16 @@ export default class GeneradorSudoku {
             for (let j = 0; j < 9; j++) {
                 this.tablero[i][j].childNodes[0].innerText = this.valoresFinales[i][j];
                 if (this.valoresFinales[i][j] != ""){
-                    this.tablero[i][j].childNodes[0].className = "pPredeterminado";
+                    this.tablero[i][j].childNodes[0].className = "pValor";
                     this.tablero[i][j].className = "casillaPredeterminada";
                 } 
+            }
+        }
+    }
+    setValoresPredeterminados(){
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                this.valoresPredeterminados[i][j] = this.valoresFinales[i][j];
             }
         }
     }
@@ -393,16 +401,18 @@ export default class GeneradorSudoku {
             for (let j = 0; j < 9; j++) {
                 if(this.anotaciones[i][j] != 0){
                     let valor = this.anotaciones[i][j];
-                    if (valor.length > 6){
-                        const extra = valor.length - 6;
-                        valor = valor.substring(0, valor.length - extra)
-                        + "\n" 
-                        + valor.substring(valor.length - extra, valor.length);
-                    }
                     this.tablero[i][j].childNodes[0].innerText = valor;
                     this.tablero[i][j].childNodes[0].className = "pAnotacion";
                 }
             }
         }
+    }
+    reiniciarPartida(){
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                this.valoresFinales[i][j] = this.valoresPredeterminados[i][j];
+            }
+        }
+        this.llenarTablero();
     }
 }

@@ -7,6 +7,18 @@
 body{
     background-color: #272424;
 }
+h1{
+    font-size: 60px;
+    color:#752d2d;
+    font-weight: bolder;
+    text-align: center;
+}
+h3{
+    color:#752d2d;
+}
+.separacion{
+    margin-top: 3rem;
+}
 .estructura{
     display: grid;
     width: 100%;
@@ -14,14 +26,23 @@ body{
     margin-top: 100px;
 }
 .menu{
+    width: 100%;
+}
+.containerIzquierda{
+    text-align: center;
     margin: auto;
-    align-items: center;
+    width: 70%;
+}
+.containerDerecha{
+    text-align: center;
+    padding: 2rem 0 0 2rem;
+    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    place-items: center;
 }
 .pValor{
-    grid-area: 1/1/2/2;
-    font-size: 40px;
-}
-.pPredeterminada{
     grid-area: 1/1/2/2;
     font-size: 40px;
 }
