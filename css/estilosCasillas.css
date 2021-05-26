@@ -49,7 +49,22 @@
     padding: 5%;
     border-radius: 10px;
 }
-
+.valorCorrectoCasilla,
+.valorCorrectoCasillaPre{
+    border-radius: 0.7rem;
+    display: grid;
+    place-items: center;
+    animation: valorCorrecto 2s forwards;
+}
+.valorCorrectoCasilla{
+    background-color: #272424;
+}
+.valorCorrectoCasillaPre{
+    background-color: #3b1e1e;
+}
+.valorErroneo{
+    animation: valorErroneo 1s ease-in-out;
+}
 @keyframes hoverIn {
     0%{
         border-radius: 0.7rem;
@@ -69,6 +84,40 @@
         border-radius: 0.7rem;
     }
 }
+@keyframes valorCorrecto{
+    0%{
+        border-radius: 1.2rem;
+        transform: scale(1);
+    }
+    25%{
+        border-radius: 1.2rem;
+        transform: scale(0.8);
+    }
+    100%{
+        border-radius: 0;
+        transform: scale(1.15);
+    }
+}
 @keyframes valorErroneo{
-    
+    0%,
+    20%,
+    40%,
+    60%,
+    80%{
+        transform:translate(0.2rem);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90%{
+        background-color: #a14040;
+        transform:translate(-0.2rem)
+    }
+    100%{
+        transform: scale(0.9);
+        border-radius: 1.2rem;
+        background-color: #272424;
+        transform:translate(0);
+    }
 }

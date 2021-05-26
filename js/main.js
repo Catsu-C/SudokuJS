@@ -1,6 +1,6 @@
 import GeneradorSudoku from './generadorSudoku.js';
 {
-    console.log("Hola git");
+    let sudokuResuelto = false;
     let tablero= document.getElementById("tablero");
     let casillaVacia = document.createElement('div');
     let cuadradoSeleccionado = casillaVacia;
@@ -9,48 +9,52 @@ import GeneradorSudoku from './generadorSudoku.js';
     let botonVaciar=document.getElementById("vaciar");
     let numeroResaltado=document.createElement('div');
     numeroResaltado.innerText=0;
-    let btnAnotacion=document.getElementById("btnAnotacion");
-    let btnSolucionar = document.getElementById("btnSolucionar");
+    let btnAnotacion=document.getElementById("anotar");
+    let btnSolucionar = document.getElementById("solucionar");
     let btnValidar = document.getElementById("verificar");
     casillaVacia.appendChild(document.createElement('p'));
-
+    let respaldoCasillas=[[], [], [], [], [], [], [], [], []];
+    let btnReiniciar=document.getElementById("reiniciar");
     crearTablero(tablero);
-    
+    let btnColocarUnValor=document.getElementById("colocarUnValor");
+    let ingame=false;
     let casillas = document.getElementsByClassName("casilla");
     let generadorSudoku = new GeneradorSudoku(casillas);
     casillas = generadorSudoku.tablero;
     document.addEventListener('keydown', e => {
         if (parseInt(e.key) > 0 && parseInt(e.key) < 10) {
-            if (botonSetAccion.className === "valorFinal") {
+            let cuadrado = cuadradoSeleccionado.id.split('|')[0];
+            let posicion = cuadradoSeleccionado.id.split('|')[1];
+            let valor= e.key;
+            let borrar=false;
+            if (cuadradoSeleccionado.childNodes[0].innerText.includes(e.key) && cuadradoSeleccionado.childNodes[0].className === "pValor") {
+                cuadradoSeleccionado.childNodes[0].innerText="";
+                generadorSudoku.valoresFinales[cuadrado][posicion]="";
+                respaldoCasillas[cuadrado][posicion]="";
+                borrar=true;
+            }
+            if (botonSetAccion.className === "valorFinal" && !borrar) {
                 cuadradoSeleccionado.childNodes[0].className = "pValor";
-                let cuadrado = cuadradoSeleccionado.id.split('|')[0];
-                let posicion = cuadradoSeleccionado.id.split('|')[1];
-                let valor= e.key;
                 limpiarPorValorFinal(cuadrado,posicion,valor,casillas);
                 cuadradoSeleccionado.childNodes[0].innerText = e.key;
                 generadorSudoku.valoresFinales[cuadrado][posicion]=valor;
+                respaldarValores(respaldoCasillas, casillas);
                 if (cuadradoSeleccionado.childNodes[0].innerText.includes(numeroResaltado.innerHTML)) {
                     cuadradoSeleccionado.className = "casillaResaltada"
                 }
-            } else {
-                if (cuadradoSeleccionado.childNodes[0].innerText.length < 10 && !(cuadradoSeleccionado.childNodes[0].innerText.includes(e.key))) {
+            } else if(!borrar){
+                if (cuadradoSeleccionado.childNodes[0].innerText.includes(e.key)) {
+                    let separacion = cuadradoSeleccionado.childNodes[0].innerText.split(e.key);
+                    cuadradoSeleccionado.childNodes[0].innerText = separacion[0] + separacion[1];
+                    console.log(cuadradoSeleccionado.childNodes[0].innerText.length);
+                }else if(cuadradoSeleccionado.childNodes[0].innerText.length < 10) {
                     cuadradoSeleccionado.childNodes[0].className = "pAnotacion";
                     cuadradoSeleccionado.childNodes[0].innerText += e.key;
-                    if (cuadradoSeleccionado.childNodes[0].innerText.length === 6) {
-                        cuadradoSeleccionado.childNodes[0].appendChild(document.createElement('br'));
-                    }
                 }
+                respaldoCasillas[cuadrado][posicion]=cuadradoSeleccionado.childNodes[0].innerText+"a";
                 if (cuadradoSeleccionado.childNodes[0].innerText.includes(numeroResaltado.innerHTML)) {
                     cuadradoSeleccionado.className = "casillaResaltada"
                 }
-            }
-        } else if (e.key === "Backspace") {
-            let valor = cuadradoSeleccionado.childNodes[0].innerText;
-            cuadradoSeleccionado.childNodes[0].innerText = valor.slice(0, valor.length - 1);
-            if(cuadradoSeleccionado.childNodes[0].className="pValor"){
-                const cuadrado = cuadradoSeleccionado.id.split('|')[0];
-                const posicion = cuadradoSeleccionado.id.split('|')[1];
-                generadorSudoku.valoresFinales[cuadrado][posicion]="";
             }
         }
     });
@@ -58,8 +62,10 @@ import GeneradorSudoku from './generadorSudoku.js';
         if(e.key === 'c'){
             if (botonSetAccion.className === "anotacion") {
                 botonSetAccion.className = "valorFinal";
+                botonSetAccion.innerText="1";
             } else {
                 botonSetAccion.className = "anotacion";
+                botonSetAccion.innerText="1234";
             }
         }
     });
@@ -84,101 +90,158 @@ import GeneradorSudoku from './generadorSudoku.js';
             numeroResaltado.className = "numero";
             numeroResaltado=casilla;
             if(casilla.id > 0){
-                desResaltarNumeros(casillas);
-                resaltarNumeros(numeroResaltado.innerText, casillas);
+                desResaltarNumeros(casillas,sudokuResuelto);
+                resaltarNumeros(numeroResaltado.innerText, casillas,sudokuResuelto);
             }else{
                 numeroResaltado.className="numero";
-                desResaltarNumeros(casillas);
+                desResaltarNumeros(casillas,sudokuResuelto);
             }
         }
     });
-    btnSolucionar.onclick= () => {
-        generadorSudoku.solucionarSudoku();
-        generadorSudoku.llenarTablero();
+    btnSolucionar.onmousedown= () => {
+        if(ingame){
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    casillas[i][j].childNodes[0].className="pValor";
+                    casillas[i][j].childNodes[0].innerText = generadorSudoku.solucion[i][j];
+                }
+            }
+        }     
+    }
+    btnSolucionar.onmouseup= () => {
+        if(ingame){
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if(respaldoCasillas[i][j].length > 1){
+                        casillas[i][j].childNodes[0].className="pAnotacion";
+                        casillas[i][j].childNodes[0].innerText=respaldoCasillas[i][j].split("a")[0];
+                    }else{
+                        casillas[i][j].childNodes[0].innerText=respaldoCasillas[i][j]
+                    }
+                }
+            }
+        }
     }
     btnAnotacion.onclick = () => {
         generadorSudoku.setValoresPosibles();
         generadorSudoku.colocarAnotaciones();
+        respaldarValores(respaldoCasillas, casillas);
     }
     botonSetAccion.onclick = () => {
         if (botonSetAccion.className === "anotacion") {
             botonSetAccion.className = "valorFinal";
+            botonSetAccion.innerText="1";
         } else {
             botonSetAccion.className = "anotacion";
+            botonSetAccion.innerText="1234";
         }
     }
     botonGenerar.onclick= () =>{
-        let inicio=new Date();
-        let tiempoInicio=inicio.getMinutes()+":"+inicio.getSeconds()+","+inicio.getMilliseconds();
-
+        sudokuResuelto = false;
         generadorSudoku.getSolucionGenerada();
         generadorSudoku.quitarValores(0, 50, [[], [], [], [], [], [], [], [], []], [[], [], [], [], [], [], [], [], []]);
+        generadorSudoku.setValoresPredeterminados();
         generadorSudoku.llenarValoresPredeterminados();
         cuadradoSeleccionado=casillaVacia;
-
-        let final = new Date();
-        let tiempoFinal = final.getMinutes() + ":" + final.getSeconds() + "," + final.getMilliseconds();
-        console.log(tiempoInicio+"  "+tiempoFinal);
+        for (let i = 0; i < 9; i++) {
+           for (let j = 0; j < 9; j++) {
+               respaldoCasillas[i][j]=casillas[i][j].childNodes[0].innerText;
+           }
+        }
+        ingame=true;
     }
     botonVaciar.onclick= () => {
+        sudokuResuelto = false;
+        ingame=false;
         generadorSudoku.vaciarTablero();
     }
     btnValidar.onclick= () => {
-        let validar = isSolucionCorrecta(generadorSudoku);
-        if(validar){
-            let animacion= document.getElementsByClassName("tablero");
-            animacion[0].className ="tablero tableroVictoria";
-            setTimeout(() => {
-                animacion[0].className = "tablero";
-            }, 1000); 
-        }else{
-            alert("tamal");
-        }
-    }
-    let debugBoton = document.getElementById("debug");
-    debugBoton.onclick = () => {
-        console.log(cuadradoSeleccionado)
-        console.log(getValoresTablero(casillas));
-        console.log(isTableroLleno(casillas));
-        //solucionarSudoku(casillas);
-        let casilla=casillas[0][0];
-        let posibilidades = casilla.childNodes[0].innerText.split("");
-        if (posibilidades.length > 6) posibilidades.splice(6, 1);
-        let valor = posibilidades[Math.floor(Math.random() * posibilidades.length)];
-        console.log(posibilidades);
-        let array=[0,0,0,0,0,0,0,0,0];
-        for (let i = 0; i < 100; i++) {
-            valor = posibilidades[Math.floor(Math.random() * posibilidades.length)];
-            array[valor-1]++;
-        }
-        console.log(array);
-        for (let i = 0; i < 9; i++) {
-            for (let j = 0; j < 9; j++) {
-                casillas[i][j].childNodes[0].className = "pAnotacion";
-                casillas[i][j].childNodes[0].innerText = "123456\n789";
-            }
-        }
-        console.log(isTableroLleno(casillas));
-        
-    };
-}
-function resaltarNumeros(numero, tablero){
-    for (let i = 0; i < 9; i++) {
-        for(let j=0; j < 9; j++){
-            let casilla=tablero[i][j];
-            if (casilla.childNodes[0].innerText.includes(numero)){
-                if (casilla.className === "casillaPredeterminada") {casilla.className = "casillaPreResaltada"; continue;}
-                casilla.className="casillaResaltada";
+        if(!sudokuResuelto){
+            const animacion=generadorSudoku.tablero;
+            let posicionErronea = isSolucionCorrecta(generadorSudoku);
+            if(posicionErronea === ""){
+                sudokuResuelto=true;
+                for (let i = 0; i < 9; i++) {
+                    for (let j = 0; j < 9; j++) {
+                        if(animacion[i][j].className === "casillaPredeterminada" || animacion[i][j].className === "casillaPreResaltada"){
+                            animacion[i][j].className ="valorCorrectoCasillaPre";
+                        }else{
+                            animacion[i][j].className ="valorCorrectoCasilla";
+                        }
+                        
+                    }
+                }
+            }else{
+                animacion[posicionErronea[0]][posicionErronea[1]].className ="casilla valorErroneo";
+                setTimeout(() => {
+                    animacion[posicionErronea[0]][posicionErronea[1]].className ="casilla";
+                }, 1000);
             }
         }
     }
+    btnReiniciar.onclick = () => {
+        if(!sudokuResuelto && ingame){
+            generadorSudoku.reiniciarPartida();
+        }
+    }
+    btnColocarUnValor.onclick=() =>{
+        if(ingame){
+            let cuadrado = Math.floor(Math.random() * (9));
+            let posicion = Math.floor(Math.random() * (9));
+            let i=0;
+            while (generadorSudoku.valoresFinales[cuadrado][posicion] != "" && i != 81) {
+                posicion++;
+                if(posicion === 9){
+                    cuadrado++;
+                    posicion=0;
+                }
+                if(cuadrado === 9){
+                    cuadrado=0;
+                    posicion=0;
+                }
+                i++;
+            }
+            const valor=generadorSudoku.solucion[cuadrado][posicion];
+            generadorSudoku.valoresFinales[cuadrado][posicion]=valor;
+            limpiarPorValorFinal(cuadrado,posicion,valor,casillas);
+            casillas[cuadrado][posicion].childNodes[0].innerText=valor; 
+            casillas[cuadrado][posicion].childNodes[0].className="pValor";
+            respaldarValores(respaldoCasillas, casillas);
+        }
+    }
 }
-function desResaltarNumeros(tablero){
+function respaldarValores(respaldoCasillas, casillas){
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            let casilla = tablero[i][j];
-            if (casilla.className === "casillaPreResaltada") { casilla.className = "casillaPredeterminada"; continue;}
-            if (casilla.className != "casillaPredeterminada") casilla.className = "casilla"
+            respaldoCasillas[i][j] = casillas[i][j].childNodes[0].innerText;
+            if(respaldoCasillas[i][j].length == 1 && casillas[i][j].childNodes[0].className === "pAnotacion"){
+                respaldoCasillas[i][j] += "a";
+            }
+        }
+    }
+}
+function resaltarNumeros(numero, tablero, sudokuResuelto){
+    if(!sudokuResuelto){
+        for (let i = 0; i < 9; i++) {
+            for(let j=0; j < 9; j++){
+                let casilla=tablero[i][j];
+                if (casilla.childNodes[0].innerText.includes(numero)){
+                    if (casilla.className === "casillaPredeterminada") {casilla.className = "casillaPreResaltada"; continue;}
+                    casilla.className="casillaResaltada";
+                }
+            }
+        }
+    }
+    
+}
+function desResaltarNumeros(tablero, sudokuResuelto){
+    if(!sudokuResuelto){
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                let casilla = tablero[i][j];
+                if (casilla.className === "casillaPreResaltada") { casilla.className = "casillaPredeterminada"; continue;}
+                if (casilla.className != "casillaPredeterminada") casilla.className = "casilla"
+            }
         }
     }
 }
@@ -251,8 +314,8 @@ function crearTablero(tablero) {
 function isSolucionCorrecta(generadorSudoku){
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (generadorSudoku.valoresFinales[i][j] !== generadorSudoku.solucion[i][j]) return false;
+            if (generadorSudoku.valoresFinales[i][j] !== generadorSudoku.solucion[i][j]) return [i,j];
         }        
     }
-    return true;
+    return "";
 }

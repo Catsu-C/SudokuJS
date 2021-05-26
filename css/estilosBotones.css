@@ -1,18 +1,85 @@
+.anotacion,
+.valorFinal{
+    animation: outBtn 0.3s forwards;
+    display: block;
+    margin:0 0 0 1rem;
+    width: 77px;
+    height: 77px;
+    background-color: #752d2d;
+    border: solid 4px #272424;
+    border-radius: 0.8rem;
+    text-align: center;
+    color: #272424;
+}
 .anotacion{
-    width: 100px;
-    height: 100px;
-    background-size: 100% 100%;
-    background-image: url("../img/anotacion.png");
+    padding-top: 1rem;
+    font-weight: 800;
+    font-size: 20px;
 }
 .valorFinal{
-    width: 100px;
-    height: 100px;
-    background-size: 100% 100%;
-    background-image: url("../img/valor.png");
+    font-weight: 800;
+    font-size: 35px;
 }
-.generarPartida{
-    margin-top: 30px;
-    width: 120px;
-    height: 70px;
-    background-color: rgb(53, 61, 71);
+#generarPartida,
+#verificar,
+#vaciar,
+#reiniciar{
+    animation: outBtn 0.3s forwards;
+    margin: 20px auto;
+    padding: 0.2em;
+    width: 80%;
+    height: 2em;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 0.5rem;
+}
+.botonesDerecha{
+    width: 100%;
+}
+#solucionar,
+#anotar,
+#colocarUnValor{
+    animation: outBtn 0.3s forwards;
+    margin: 10px auto;
+    padding: 0.2em;
+    width: 80%;
+    height: 2em;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 0.5rem;
+}
+#generarPartida:hover,
+#verificar:hover,
+#vaciar:hover,
+.anotacion:hover,
+.valorFinal:hover,
+#solucionar:hover,
+#anotar:hover,
+#colocarUnValor:hover,
+#reiniciar:hover{
+    animation: inBtn 0.3s forwards;
+}
+@keyframes inBtn {
+    from{
+        color: #272424;
+        background-color: #752d2d;
+        border:none;
+    }
+    to{
+        background-color: #272424;
+        color: #752d2d;
+        border:solid 5px #752d2d ;
+    }
+}
+@keyframes outBtn {
+    from{
+        background-color: #272424;
+        color: #752d2d;
+        border:solid 5px #752d2d ;
+    }
+    to{
+        color: #272424;
+        background-color: #752d2d;
+        border:none ;
+    }
 }
